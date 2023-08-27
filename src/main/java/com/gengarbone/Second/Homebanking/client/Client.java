@@ -1,9 +1,10 @@
 package com.gengarbone.Second.Homebanking.client;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.gengarbone.Second.Homebanking.account.Account;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Client {
@@ -15,6 +16,14 @@ public class Client {
     private String firstName;
     private String lastName;
     private String email;
+
+
+
+    //VINCULACIONES
+
+    @OneToMany(mappedBy="client", fetch= FetchType.LAZY) //VINCULACION CON LA TABLA
+    Set<Account> accounts = new HashSet<>(); // COLECCION PARA CONTENER LAS
+    // CUENTAS QUE PERTENECEN A UN CLIENT
 
 
 
@@ -62,6 +71,19 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    //Getter de la coleccion de cuentas
+    public Set<Account> getAccounts() {
+        return accounts;
+    } //GETTER DE LA COLECCION DE ACCOUNTS PERTENECIENTES AL CLIENT
+
+
+    //Setter para agregar cuentas a clientes, guardandolas en la coleccion Account
+    public void addAccount(Account account) {
+        account.setClient(this);
+        this.accounts.add(account);
     }
 
 
